@@ -6,4 +6,4 @@ My Go monorepo
 | ---------- | ------- |
 | ECS        | v0.1    |
 | Graphics3D | v0.1    |
-| Graphics2D | WIP     |
+| Graphics2D | v0.1    |
