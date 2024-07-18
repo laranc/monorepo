@@ -3,7 +3,6 @@ package graphics3d
 import "github.com/go-gl/mathgl/mgl32"
 
 type Camera3D struct {
-	Model      mgl32.Mat4
 	View       mgl32.Mat4
 	Projection mgl32.Mat4
 	Position   mgl32.Vec3
@@ -12,9 +11,8 @@ type Camera3D struct {
 	FOV        float32
 }
 
-func NewCamera(model mgl32.Mat4, view, projection mgl32.Mat4, position, up, front mgl32.Vec3, fov float32) *Camera3D {
+func NewCamera(view, projection mgl32.Mat4, position, up, front mgl32.Vec3, fov float32) *Camera3D {
 	return &Camera3D{
-		Model:      model,
 		View:       view,
 		Projection: projection,
 		Position:   position,

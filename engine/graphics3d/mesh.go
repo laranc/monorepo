@@ -10,9 +10,7 @@ import (
 type Mesh struct {
 	vertices                   []Vertex
 	indices                    []uint32
-	vao                        uint32
-	vbo                        uint32
-	ebo                        uint32
+	vao, vbo, ebo              uint32
 	vertexCount, triangleCount int
 	position, rotation, scale  mgl32.Vec3
 	model                      mgl32.Mat4
@@ -35,19 +33,7 @@ func NewMesh(vertices []Vertex, indices []uint32, vertexCount, triangleCount int
 }
 
 func NewMeshPrimitive(primitive Primitive, position, rotation, scale mgl32.Vec3) *Mesh {
-	mesh := &Mesh{
-		vertices:      primitive.GetVertices(),
-		indices:       primitive.GetIndices(),
-		vertexCount:   primitive.GetVertexCount(),
-		triangleCount: primitive.GetTriangleCount(),
-		position:      position,
-		rotation:      rotation,
-		scale:         scale,
-	}
-	mesh.initGLData()
-	mesh.UpdateModel()
-
-	return mesh
+	return NewMesh(primitive.GetVertices(), primitive.GetIndices(), primitive.GetVertexCount(), primitive.GetTriangleCount(), position, rotation, scale)
 }
 
 func (m *Mesh) Destroy() {
@@ -59,13 +45,16 @@ func (m *Mesh) Destroy() {
 func (m *Mesh) initGLData() {
 	gl.GenVertexArrays(1, &m.vao)
 	gl.GenBuffers(1, &m.vbo)
-	gl.GenBuffers(1, &m.ebo)
 
 	gl.BindVertexArray(m.vao)
 	gl.BindBuffer(gl.ARRAY_BUFFER, m.vbo)
 	gl.BufferData(gl.ARRAY_BUFFER, m.vertexCount*int(unsafe.Sizeof(m.vertices[0])), gl.Ptr(m.vertices), gl.STATIC_DRAW)
-	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, m.ebo)
-	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, m.triangleCount*3*int(unsafe.Sizeof(m.indices[0])), gl.Ptr(m.indices), gl.STATIC_DRAW)
+
+	if m.indices != nil {
+		gl.GenBuffers(1, &m.ebo)
+		gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, m.ebo)
+		gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, m.triangleCount*3*int(unsafe.Sizeof(m.indices[0])), gl.Ptr(m.indices), gl.STATIC_DRAW)
+	}
 
 	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, int32(unsafe.Sizeof(m.vertices[0])), unsafe.Offsetof(m.vertices[0].Position))
 	gl.EnableVertexAttribArray(0)

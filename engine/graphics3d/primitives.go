@@ -98,3 +98,58 @@ func (t *Triangle) GetVertexCount() int {
 func (t *Triangle) GetTriangleCount() int {
 	return t.triangleCount
 }
+
+type Pyramid struct {
+	vertices                   []Vertex
+	indices                    []uint32
+	vertexCount, triangleCount int
+}
+
+func NewPyramid() *Pyramid {
+	pyramid := new(Pyramid)
+	vertices := []Vertex{
+		//Triangle front
+		{Position: mgl32.Vec3{0.0, 0.5, 0.0}, Color: mgl32.Vec3{1.0, 0.0, 0.0}, Texcoord: mgl32.Vec2{0.5, 1.0}, Normal: mgl32.Vec3{0.0, 0.0, 1.0}},
+		{Position: mgl32.Vec3{-0.50, -0.5, 0.5}, Color: mgl32.Vec3{0.0, 1.0, 0.0}, Texcoord: mgl32.Vec2{0.0, 0.0}, Normal: mgl32.Vec3{0.0, 0.0, 1.0}},
+		{Position: mgl32.Vec3{0.50, -0.5, 0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{1.0, 0.0}, Normal: mgl32.Vec3{0.0, 0.0, 1.0}},
+
+		//Triangle left
+		{Position: mgl32.Vec3{0.0, 0.5, 0.0}, Color: mgl32.Vec3{1.0, 1.0, 0.0}, Texcoord: mgl32.Vec2{0.5, 1.0}, Normal: mgl32.Vec3{-1.0, 0.0, 0.0}},
+		{Position: mgl32.Vec3{-0.5, -0.5, -0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{0.0, 0.0}, Normal: mgl32.Vec3{-1.0, 0.0, 0.0}},
+		{Position: mgl32.Vec3{-0.5, -0.5, 0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{1.0, 0.0}, Normal: mgl32.Vec3{-1.0, 0.0, 0.0}},
+
+		//Triangle back
+		{Position: mgl32.Vec3{0.0, 0.5, 0.0}, Color: mgl32.Vec3{1.0, 1.0, 0.0}, Texcoord: mgl32.Vec2{0.5, 1.0}, Normal: mgl32.Vec3{0.0, 0.0, -1.0}},
+		{Position: mgl32.Vec3{0.5, -0.5, -0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{0.0, 0.0}, Normal: mgl32.Vec3{0.0, 0.0, -1.0}},
+		{Position: mgl32.Vec3{-0.5, -0.5, -0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{1.0, 0.0}, Normal: mgl32.Vec3{0.0, 0.0, -1.0}},
+
+		//Triangles right
+		{Position: mgl32.Vec3{0.0, 0.5, 0.0}, Color: mgl32.Vec3{1.0, 1.0, 0.0}, Texcoord: mgl32.Vec2{0.5, 1.0}, Normal: mgl32.Vec3{1.0, 0.0, 0.0}},
+		{Position: mgl32.Vec3{0.5, -0.5, 0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{0.0, 0.0}, Normal: mgl32.Vec3{1.0, 0.0, 0.0}},
+		{Position: mgl32.Vec3{0.5, -0.5, -0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{1.0, 0.0}, Normal: mgl32.Vec3{1.0, 0.0, 0.0}},
+	}
+	pyramid.Set(vertices, nil, 12, 4)
+	return pyramid
+}
+
+func (p *Pyramid) Set(vertices []Vertex, indices []uint32, vertexCount, triangleCount int) {
+	p.vertices = vertices
+	p.indices = indices
+	p.vertexCount = vertexCount
+	p.triangleCount = triangleCount
+}
+
+func (p *Pyramid) GetVertices() []Vertex {
+	return p.vertices
+}
+
+func (p *Pyramid) GetIndices() []uint32 {
+	return p.indices
+}
+
+func (p *Pyramid) GetVertexCount() int {
+	return p.vertexCount
+}
+func (p *Pyramid) GetTriangleCount() int {
+	return p.triangleCount
+}
