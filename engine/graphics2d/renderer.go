@@ -119,6 +119,10 @@ func (r *Renderer2D) DrawTexture(dst sdl.Rect, src sdl.Rect, texture *sdl.Textur
 }
 
 func (r *Renderer2D) DrawText(str string, color sdl.Color, x, y int32) {
+	if r.font == nil {
+		fmt.Println("Font not loaded")
+		return
+	}
 	text, err := r.font.RenderUTF8Blended(str, color)
 	if err != nil {
 		fmt.Println(err)

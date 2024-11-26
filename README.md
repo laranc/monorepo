@@ -1,5 +1,5 @@
-# go-monorepo
-My Go monorepo
+# monorepo
+My Go monorepo. Contains an ECS engine, 2D SDL renderer wrapper, and a 3D OpenGL-based renderer
 
 ## Status
 | Module     | Version |
