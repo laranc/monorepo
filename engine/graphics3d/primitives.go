@@ -3,17 +3,18 @@ package graphics3d
 import "github.com/go-gl/mathgl/mgl32"
 
 type Primitive interface {
-	Set(vertices []Vertex, indices []uint32, vertexCount, triangleCount int)
+	Set(vertices []Vertex, indices []uint32, vertexCount, indexCount, triangleCount int)
 	GetVertices() []Vertex
 	GetIndices() []uint32
 	GetVertexCount() int
+	GetIndexCount() int
 	GetTriangleCount() int
 }
 
 type Quad struct {
-	vertices                   []Vertex
-	indices                    []uint32
-	vertexCount, triangleCount int
+	vertices                               []Vertex
+	indices                                []uint32
+	vertexCount, indexCount, triangleCount int
 }
 
 func NewQuad() *Quad {
@@ -28,15 +29,15 @@ func NewQuad() *Quad {
 		0, 1, 2,
 		0, 2, 3,
 	}
-	quad.Set(vertices, indices, 4, 2)
-
+	quad.Set(vertices, indices, 4, 6, 2)
 	return quad
 }
 
-func (q *Quad) Set(vertices []Vertex, indices []uint32, vertexCount, triangleCount int) {
+func (q *Quad) Set(vertices []Vertex, indices []uint32, vertexCount, indexCount, triangleCount int) {
 	q.vertices = vertices
 	q.indices = indices
 	q.vertexCount = vertexCount
+	q.indexCount = indexCount
 	q.triangleCount = triangleCount
 }
 
@@ -52,14 +53,18 @@ func (q *Quad) GetVertexCount() int {
 	return q.vertexCount
 }
 
+func (q *Quad) GetIndexCount() int {
+	return q.indexCount
+}
+
 func (q *Quad) GetTriangleCount() int {
 	return q.triangleCount
 }
 
 type Triangle struct {
-	vertices                   []Vertex
-	indices                    []uint32
-	vertexCount, triangleCount int
+	vertices                               []Vertex
+	indices                                []uint32
+	vertexCount, indexCount, triangleCount int
 }
 
 func NewTriangle() *Triangle {
@@ -72,15 +77,15 @@ func NewTriangle() *Triangle {
 	indices := []uint32{
 		0, 1, 2,
 	}
-	triangle.Set(vertices, indices, 3, 1)
-
+	triangle.Set(vertices, indices, 3, 3, 1)
 	return triangle
 }
 
-func (t *Triangle) Set(vertices []Vertex, indices []uint32, vertexCount, triangleCount int) {
+func (t *Triangle) Set(vertices []Vertex, indices []uint32, vertexCount, indexCount, triangleCount int) {
 	t.vertices = vertices
 	t.indices = indices
 	t.vertexCount = vertexCount
+	t.indexCount = indexCount
 	t.triangleCount = triangleCount
 }
 
@@ -95,13 +100,17 @@ func (t *Triangle) GetIndices() []uint32 {
 func (t *Triangle) GetVertexCount() int {
 	return t.vertexCount
 }
+
+func (t *Triangle) GetIndexCount() int {
+	return t.indexCount
+}
+
 func (t *Triangle) GetTriangleCount() int {
 	return t.triangleCount
 }
 
 type Pyramid struct {
 	vertices                   []Vertex
-	indices                    []uint32
 	vertexCount, triangleCount int
 }
 
@@ -128,13 +137,12 @@ func NewPyramid() *Pyramid {
 		{Position: mgl32.Vec3{0.5, -0.5, 0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{0.0, 0.0}, Normal: mgl32.Vec3{1.0, 0.0, 0.0}},
 		{Position: mgl32.Vec3{0.5, -0.5, -0.5}, Color: mgl32.Vec3{0.0, 0.0, 1.0}, Texcoord: mgl32.Vec2{1.0, 0.0}, Normal: mgl32.Vec3{1.0, 0.0, 0.0}},
 	}
-	pyramid.Set(vertices, nil, 12, 4)
+	pyramid.Set(vertices, nil, 12, 0, 4)
 	return pyramid
 }
 
-func (p *Pyramid) Set(vertices []Vertex, indices []uint32, vertexCount, triangleCount int) {
+func (p *Pyramid) Set(vertices []Vertex, indices []uint32, vertexCount, indexCount, triangleCount int) {
 	p.vertices = vertices
-	p.indices = indices
 	p.vertexCount = vertexCount
 	p.triangleCount = triangleCount
 }
@@ -144,12 +152,17 @@ func (p *Pyramid) GetVertices() []Vertex {
 }
 
 func (p *Pyramid) GetIndices() []uint32 {
-	return p.indices
+	return nil
 }
 
 func (p *Pyramid) GetVertexCount() int {
 	return p.vertexCount
 }
+
+func (p *Pyramid) GetIndexCount() int {
+	return 0
+}
+
 func (p *Pyramid) GetTriangleCount() int {
 	return p.triangleCount
 }

@@ -13,7 +13,7 @@ type Renderer3D struct {
 	context sdl.GLContext
 }
 
-func NewRenderer3D(title string, width, height int32, glMajor, glMinor int) (*Renderer3D, error) {
+func MakeRenderer3D(title string, width, height int32, glMajor, glMinor int) (Renderer3D, error) {
 	fmt.Println("Initializing...")
 	var err error
 	var window *sdl.Window
@@ -21,43 +21,43 @@ func NewRenderer3D(title string, width, height int32, glMajor, glMinor int) (*Re
 
 	err = sdl.Init(sdl.INIT_EVERYTHING)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
 	window, err = sdl.CreateWindow(title, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, width, height, sdl.WINDOW_OPENGL)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
 	err = sdl.GLSetAttribute(sdl.GL_CONTEXT_MAJOR_VERSION, glMajor)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 	err = sdl.GLSetAttribute(sdl.GL_CONTEXT_MINOR_VERSION, glMinor)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 	err = sdl.GLSetAttribute(sdl.GL_CONTEXT_PROFILE_MASK, sdl.GL_CONTEXT_PROFILE_CORE)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
 	context, err = window.GLCreateContext()
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
 	err = gl.Init()
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
 	err = img.Init(img.INIT_PNG)
 	if err != nil {
-		return nil, err
+		return Renderer3D{}, err
 	}
 
-	renderer := &Renderer3D{
+	renderer := Renderer3D{
 		window:  window,
 		context: context,
 	}
@@ -68,6 +68,7 @@ func NewRenderer3D(title string, width, height int32, glMajor, glMinor int) (*Re
 }
 
 func (r *Renderer3D) Destroy() {
+	fmt.Println("Closing...")
 	sdl.Quit()
 	r.window.Destroy()
 	sdl.GLDeleteContext(r.context)
